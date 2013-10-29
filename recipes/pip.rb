@@ -23,6 +23,15 @@
 # redhat/package: /usr/bin/pip (sha a8a3a3)
 # omnibus/source: /opt/local/bin/pip (sha 29ce9874)
 
+if not node['python']['pypi_mirror'].empty?
+  template "#{node['python']['pip_conf']['system_loc']}" do
+    source "pip.conf.erb"
+    mode "644"
+    owner "root"
+    group "root"
+  end
+end
+
 if node['python']['install_method'] == 'source'
   pip_binary = "#{node['python']['prefix_dir']}/bin/pip"
 elsif platform_family?("rhel", "fedora")
